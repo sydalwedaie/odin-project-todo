@@ -1,0 +1,78 @@
+:root {
+  /* --- Backgrounds --- */
+  /* The main, soft cream background of the app */
+  --app-bg: #f5f2eb;
+  /* Slightly darker, warm beige for task cards, sidebars, and callouts */
+  --surface-bg: #eae3d8;
+  /* For hover states on task rows or buttons */
+  --surface-hover: #dfd7c9;
+
+  /* --- Typography --- */
+  /* Dark espresso brown instead of harsh black for comfortable reading */
+  --text-primary: #3e3127;
+  /* Muted brownish-grey for secondary notes, dates, and empty states */
+  --text-secondary: #7a6f66;
+
+  /* --- Borders & Dividers --- */
+  /* Soft transition color for lines between tasks */
+  --border-subtle: #d4cabc;
+
+  /* --- Accents & Status (Crucial for Todo Apps) --- */
+  /* The warm terracotta red seen in the "Primary" heading */
+  --accent-brand: #c65345;
+  /* The earthy green seen in the checked boxes - perfect for "completed" states */
+  --status-success: #3b8e63;
+  /* The warm golden-yellow seen in the text highlights - great for "due soon" */
+  --status-warning: #d4a352;
+  /* A soft red for delete buttons or overdue tasks */
+  --status-danger: #d9534f;
+
+  /* --- Tags & Pills --- */
+  /* Background color for category tags (e.g., #Food, #Personal) */
+  --tag-bg: #e0d6c8;
+  --tag-text: #52443a;
+}
+body {
+  background-color: var(--app-bg);
+}
+
+li {
+  list-style-type: none;
+}
+
+.app-shell {
+  display: flex;
+}
+
+.sidebar {
+  min-width: 14rem;
+  padding: 2rem 0.5rem 0;
+  background-color: var(--surface-bg);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .footer {
+    margin-top: auto;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    padding: 0.5rem 0.3rem;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+.main {
+  height: 100vh;
+  padding: 2rem 10% 0;
+  flex-grow: 1;
+}
+
+dialog {
+  background-color: var(--surface-bg);
+}

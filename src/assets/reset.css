@@ -1,0 +1,113 @@
+/* ----------------- */
+/* General Resets */
+/* ----------------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+figure,
+p,
+ol,
+ul {
+  margin: 0;
+}
+
+ol,
+ul {
+  list-style: none;
+  padding-inline: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+img,
+picture,
+video,
+canvas {
+  display: block;
+  max-inline-size: 100%;
+}
+
+/* ----------------- */
+/* Opinionated Fixes */
+/* ----------------- */
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+button,
+input,
+label {
+  line-height: 1.15;
+}
+
+/* Avoid text overflows */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+/* Improve line wrapping */
+p {
+  text-wrap: pretty;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/* Fix VoiceOver issue */
+:where(li)::before {
+  content: "\200B";
+}
+
+/* Fix unstyled elements in Safari */
+:where(button, [type="button" i], [type="reset" i], [type="submit" i]) {
+  -webkit-appearance: button;
+  appearance: button;
+}
+
+/* Fix for Safari */
+:where(abbr[title]) {
+  text-decoration: underline;
+  text-decoration: underline dotted;
+}
+
+/* ----------------- */
+/* My Resets */
+/* ----------------- */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* Kevin Powel */
+/* Reduced motion */
+/* :target smooth scroll and margin */
