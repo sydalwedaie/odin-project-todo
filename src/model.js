@@ -1,3 +1,5 @@
+import { isToday, isFuture } from "date-fns";
+
 class Collection {
   #todos = [];
 
@@ -55,7 +57,20 @@ class Collection {
     return this.todos.filter((todo) => todo.project === project);
   }
 
-  getTodosByDate(predicate) {
+  getTodosByTimeFrame(timeFrame) {
+    let predicate;
+    switch (timeFrame) {
+      case "today":
+        predicate = isToday;
+        break;
+      case "upcomming":
+        predicate = isFuture;
+        break;
+      case "anytime":
+        predicate = (val) => val === null;
+        break;
+    }
+
     return this.todos.filter((todo) => predicate(todo.dueDate));
   }
 

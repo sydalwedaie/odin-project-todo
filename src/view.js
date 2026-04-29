@@ -1,4 +1,5 @@
 import { html } from "./helpers.js";
+import { format } from "date-fns";
 
 class SidebarView {
   constructor(root, projects) {
@@ -60,7 +61,7 @@ class SidebarView {
     });
   }
 
-  bindShowDate(handleClick) {
+  bindShowTimeFrame(handleClick) {
     this.root.addEventListener("click", (e) => {
       if (e.target.dataset.timeFrame) {
         handleClick(e.target.dataset.timeFrame);
@@ -92,13 +93,30 @@ class ContentView {
 
   #getTodoItemHtml(todo) {
     return html`
-      <input type="checkbox" ${todo.isDone ? "checked" : ""} />
+      <input
+        type="checkbox"
+        class="todo-status"
+        ${todo.isDone ? "checked" : ""}
+      />
       <div>
         <span>${todo.title}</span>
-        <span>${todo.dueDate}</span>
+        <span
+          >${todo.dueDate === null
+            ? ""
+            : format(todo.dueDate, "yyyy-MM-dd")}</span
+        >
         <span>${todo.priority}</span>
       </div>
     `;
+  }
+
+  bindToggleTodoStatus(handleClick) {
+    const el = this.root.querySelector("ul");
+    el.addEventListener("click", (e) => {
+      if (e.target.classList[0] === "todo-status") {
+        handleClick(e.target.closest("[data-todo-id]").dataset.todoId);
+      }
+    });
   }
 
   bindShowTodoDetails(handleClick) {
@@ -123,93 +141,92 @@ class TodoView {
     this.root = root;
   }
 
-  #getDateFromEpoch(epoch) {
-    const date = new Date(epoch);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    return `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
-  }
-
   render() {
     this.root.dataset.todoId = this.todo.id;
     this.root.innerHTML = html`
-      <main>
-        <section class="todo-title-wrapper">
-          <input
-            type="checkbox"
-            id="todo-status"
-            ${this.todo.isDone ? "checked" : ""}
-          />
-          <input
-            type="text"
-            placeholder="New To-Do"
-            value="${this.todo.title}"
-            id="todo-title"
-          />
-        </section>
-        <section class="todo-details-wrapper">
-          <textarea name="todo-notes" id="todo-notes" placeholder="Todo notes">
-${this.todo.notes}</textarea
-          >
-          <div class="todo-due-date">
+      <div class="todo-view">
+        <main>
+          <section class="todo-title-wrapper">
             <input
-              type="date"
-              id="todo-due-date"
-              value=${this.#getDateFromEpoch(this.todo.dueDate)}
+              type="checkbox"
+              id="todo-status"
+              ${this.todo.isDone ? "checked" : ""}
             />
-          </div>
-          <div class="todo-priority">
-            <div class="radio-item">
+            <input
+              type="text"
+              placeholder="New To-Do"
+              value="${this.todo.title}"
+              id="todo-title"
+            />
+          </section>
+          <section class="todo-details-wrapper">
+            <textarea
+              name="todo-notes"
+              id="todo-notes"
+              placeholder="Todo notes"
+            >
+${this.todo.notes}</textarea
+            >
+            <div class="todo-due-date">
               <input
-                type="radio"
-                id="priority-noarmal"
-                name="priority"
-                value="0"
-                ${this.todo.priority === 0 ? "checked" : ""}
+                type="date"
+                id="todo-due-date"
+                value=${this.todo.dueDate === null
+                  ? ""
+                  : format(this.todo.dueDate, "yyyy-MM-dd")}
               />
-              <label for="priority-noarmal">Normal</label>
             </div>
+            <div class="todo-priority">
+              <div class="radio-item">
+                <input
+                  type="radio"
+                  id="priority-noarmal"
+                  name="priority"
+                  value="0"
+                  ${this.todo.priority === 0 ? "checked" : ""}
+                />
+                <label for="priority-noarmal">Normal</label>
+              </div>
 
-            <div class="radio-item">
-              <input
-                type="radio"
-                id="priority-important"
-                name="priority"
-                value="1"
-                ${this.todo.priority === 1 ? "checked" : ""}
-              />
-              <label for="priority-important">Important</label>
+              <div class="radio-item">
+                <input
+                  type="radio"
+                  id="priority-important"
+                  name="priority"
+                  value="1"
+                  ${this.todo.priority === 1 ? "checked" : ""}
+                />
+                <label for="priority-important">Important</label>
+              </div>
+              <div class="radio-item">
+                <input
+                  type="radio"
+                  id="priority-urgent"
+                  name="priority"
+                  value="2"
+                  ${this.todo.priority === 2 ? "checked" : ""}
+                />
+                <label for="priority-urgent">Urgent</label>
+              </div>
             </div>
-            <div class="radio-item">
-              <input
-                type="radio"
-                id="priority-urgent"
-                name="priority"
-                value="2"
-                ${this.todo.priority === 2 ? "checked" : ""}
-              />
-              <label for="priority-urgent">Urgent</label>
-            </div>
-          </div>
-        </section>
-      </main>
-      <footer>
-        <section class="todo-project-wrapper">
-          <input
-            type="text"
-            placeholder="Project"
-            value="${this.todo.project}"
-            id="todo-project"
-          />
-        </section>
-        <section class="todo-controls-wrapper">
-          <button class="btn-cancel">Cancel</button>
-          <button class="btn-save">Save</button>
-          <button class="btn-delete">Delete</button>
-        </section>
-      </footer>
+          </section>
+        </main>
+        <footer>
+          <section class="todo-project-wrapper">
+            <input
+              type="text"
+              placeholder="Project"
+              value="${this.todo.project}"
+              id="todo-project"
+            />
+          </section>
+          <section class="todo-controls-wrapper">
+            <button class="btn-cancel">Cancel</button>
+            <button class="btn-save">Save</button>
+            <button class="btn-delete">Delete</button>
+          </section>
+        </footer>
+      </div>
     `;
 
     this.#handleCloseModal();
@@ -223,28 +240,31 @@ ${this.todo.notes}</textarea
     });
   }
   // Used for both adding and updating todos
-  bindSaveTodo(handleclick) {
-    this.dom.addEventListener("click", (e) => {
+  bindSaveTodo(handleClick) {
+    const el = this.root.querySelector(".todo-view");
+    el.addEventListener("click", (e) => {
       if (e.target.classList[0] === "btn-save") {
         e.preventDefault();
-        const $ = (selector) => this.dom.querySelector(selector);
+        const $ = (selector) => this.root.querySelector(selector);
         const details = {
           title: $("#todo-title").value,
           notes: $("#todo-notes").value,
-          dueDate: $("#todo-due-date").valueAsNumber,
+          dueDate: $("#todo-due-date").valueAsNumber || null,
           priority: Number($('input[name="priority"]:checked').value),
+          project: $("#todo-project").value,
           isDone: $("#todo-status").checked,
         };
-        handleclick(details);
+        handleClick(details);
       }
     });
   }
 
-  bindDeleteTodo(handleclick) {
-    this.dom.addEventListener("click", (e) => {
+  bindDeleteTodo(handleClick) {
+    const el = this.root.querySelector(".todo-view");
+    el.addEventListener("click", (e) => {
       if (e.target.classList[0] === "btn-delete") {
         e.preventDefault();
-        handleclick(this.dom.dataset.todoId);
+        handleClick();
       }
     });
   }

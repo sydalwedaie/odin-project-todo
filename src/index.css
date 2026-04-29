@@ -44,7 +44,7 @@ li {
   display: flex;
 }
 
-.sidebar {
+#sidebar {
   min-width: 14rem;
   max-width: 16rem;
   padding: 2rem 0.5rem 0;
