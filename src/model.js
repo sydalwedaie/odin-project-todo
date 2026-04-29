@@ -34,6 +34,18 @@ class Collection {
     this.save();
   }
 
+  // Project tasks
+  deleteProject(project) {
+    this.#todos = this.todos.filter((todo) => todo.project !== project);
+    this.save();
+  }
+
+  editProject(project, newName) {
+    const todos = this.#todos.filter((todo) => todo.project === project);
+    todos.forEach((todo) => (todo.project = newName));
+    this.save();
+  }
+
   // Management tasks
   init(sampleData) {
     const data = JSON.parse(localStorage.getItem("collection")) || sampleData;

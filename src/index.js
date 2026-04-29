@@ -5,7 +5,9 @@ import "./template.html";
 import sampleData from "./sample_data.js";
 import { isToday, isFuture, format } from "date-fns";
 import { Collection } from "./model.js";
-import { SidebarView, ContentView, TodoView } from "./view.js";
+import { SidebarView } from "./view_sidebar.js";
+import { ContentView } from "./view_content.js";
+import { TodoView } from "./view_todo.js";
 
 const collection = new Collection();
 collection.init(sampleData);
@@ -47,16 +49,28 @@ function renderContentView(title, todos) {
   contentView.bindShowTodoDetails((id) => {
     renderTodoView(id);
   });
+
+  contentView.bindShowAddnewTodo(() => {
+    renderTodoView();
+  });
 }
 
 function renderTodoView(id) {
-  const todoView = new TodoView(dialogEl, collection.getTodo(id));
+  const todoView = new TodoView(
+    dialogEl,
+    collection.getTodo(id),
+    collection.projects
+  );
 
   dialogEl.showModal();
   todoView.render();
-  // Edit todo - modal opened from todo list
   todoView.bindSaveTodo((details) => {
-    collection.editTodo(id, details);
+    // This setup allows using one button for both events
+    if (id) {
+      collection.editTodo(id, details);
+    } else {
+      collection.addTodo(details);
+    }
     dialogEl.close();
     updateView(collection);
   });
@@ -69,6 +83,7 @@ function renderTodoView(id) {
 }
 
 function updateView(collection) {
+  renderSidebarView(collection.projects);
   switch (UIstate.currentViewType) {
     case "project":
       renderContentView(
