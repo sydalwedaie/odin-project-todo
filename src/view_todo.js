@@ -12,8 +12,9 @@ const todoTemplate = {
 
 export class TodoView {
   constructor(root, todo, projects) {
+    this.root = root;
     this.todo = todo || todoTemplate;
-    ((this.projects = projects), (this.root = root));
+    this.projects = projects;
   }
 
   render() {
@@ -32,6 +33,7 @@ export class TodoView {
               placeholder="New To-Do"
               value="${this.todo.title}"
               id="todo-title"
+              required
             />
           </section>
           <section class="todo-details-wrapper">
@@ -46,9 +48,9 @@ ${this.todo.notes}</textarea
               <input
                 type="date"
                 id="todo-due-date"
-                value=${this.todo.dueDate === null
+                value="${this.todo.dueDate === null
                   ? ""
-                  : format(this.todo.dueDate, "yyyy-MM-dd")}
+                  : format(this.todo.dueDate, "yyyy-MM-dd")}"
               />
             </div>
             <div class="todo-priority">
@@ -94,6 +96,7 @@ ${this.todo.notes}</textarea
               value="${this.todo.project}"
               id="todo-project"
               list="projects-list"
+              required
             />
             <datalist id="projects-list">
               <option value="Inbox">Inbox</option>

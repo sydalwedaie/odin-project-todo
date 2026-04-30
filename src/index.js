@@ -51,11 +51,12 @@ function renderContentView(title, todos) {
   });
 
   contentView.bindShowAddnewTodo(() => {
-    renderTodoView();
+    renderTodoView(null);
   });
 }
 
 function renderTodoView(id) {
+  // Recieves projects for list autocomplete
   const todoView = new TodoView(
     dialogEl,
     collection.getTodo(id),

@@ -2,16 +2,16 @@ import { html } from "./helpers.js";
 import { format } from "date-fns";
 
 export class ContentView {
-  constructor(root, viewName, todos) {
+  constructor(root, title, todos) {
     this.root = root;
-    this.viewName = viewName;
+    this.title = title;
     this.todos = todos;
   }
 
   render() {
     this.root.innerHTML = html`
       <div class="content-view">
-        <h1>${this.viewName}</h1>
+        <h1>${this.title}</h1>
         <ul>
           ${this.todos
             .map(
