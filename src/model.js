@@ -35,14 +35,14 @@ class Collection {
   }
 
   // Project tasks
-  deleteProject(project) {
-    this.#todos = this.todos.filter((todo) => todo.project !== project);
+  editProject(projectName, newName) {
+    const todos = this.#todos.filter((todo) => todo.project === projectName);
+    todos.forEach((todo) => (todo.project = newName));
     this.save();
   }
 
-  editProject(project, newName) {
-    const todos = this.#todos.filter((todo) => todo.project === project);
-    todos.forEach((todo) => (todo.project = newName));
+  deleteProject(project) {
+    this.#todos = this.todos.filter((todo) => todo.project !== project);
     this.save();
   }
 
@@ -65,6 +65,10 @@ class Collection {
   }
 
   // Filters
+  getTodosFromInbox() {
+    return this.todos.filter((todo) => todo.project === "Inbox");
+  }
+
   getTodosByProject(project) {
     return this.todos.filter((todo) => todo.project === project);
   }

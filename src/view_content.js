@@ -2,8 +2,9 @@ import { html } from "./helpers.js";
 import { format } from "date-fns";
 
 export class ContentView {
-  constructor(root, title, todos) {
+  constructor(root, type, title, todos) {
     this.root = root;
+    this.type = type;
     this.title = title;
     this.todos = todos;
   }
@@ -11,7 +12,12 @@ export class ContentView {
   render() {
     this.root.innerHTML = html`
       <div class="content-view">
-        <h1>${this.title}</h1>
+        <h1>
+          ${this.title}
+          ${this.type === "project"
+            ? "<button class='show-edit-project'>edit</button>"
+            : ""}
+        </h1>
         <ul>
           ${this.todos
             .map(
@@ -41,11 +47,22 @@ export class ContentView {
         >
         <span>${todo.priority}</span>
       </div>
+      ${this.type === "timeFrame" ? `<div>${todo.project}</div>` : ""}
     `;
   }
 
+  bindShowEditProject(handleClick) {
+    const el = this.root.querySelector(".content-view");
+    el.addEventListener("click", (e) => {
+      if (e.target.classList[0] === "show-edit-project") {
+        // pass project's name
+        handleClick(this.title);
+      }
+    });
+  }
+
   bindToggleTodoStatus(handleClick) {
-    const el = this.root.querySelector("ul");
+    const el = this.root.querySelector(".content-view");
     el.addEventListener("click", (e) => {
       if (e.target.classList[0] === "todo-status") {
         handleClick(e.target.closest("[data-todo-id]").dataset.todoId);
@@ -56,7 +73,7 @@ export class ContentView {
   bindShowTodoDetails(handleClick) {
     // Select an element that gets distroyed every time a new view is rendered
     // otherwise this event listener keeps piling up.
-    const el = this.root.querySelector("ul");
+    const el = this.root.querySelector(".content-view");
     el.addEventListener("click", (e) => {
       // `closest` helps find the nerest target matching the selector
       const listItem = e.target.closest("[data-todo-id]");

@@ -1,19 +1,10 @@
 import { html } from "./helpers.js";
 import { format } from "date-fns";
 
-const todoTemplate = {
-  title: "",
-  notes: "",
-  dueDate: null,
-  priority: 0,
-  project: "",
-  isDone: false,
-};
-
 export class TodoView {
   constructor(root, todo, projects) {
     this.root = root;
-    this.todo = todo || todoTemplate;
+    this.todo = todo;
     this.projects = projects;
   }
 
