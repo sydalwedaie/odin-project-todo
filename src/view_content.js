@@ -1,6 +1,8 @@
 import { html } from "./helpers.js";
 import { format } from "date-fns";
 
+// This class is used to display 3 views: Inbox, time frames, and project
+// Some views have conditionally rendered elements
 export class ContentView {
   constructor(root, type, title, todos) {
     this.root = root;

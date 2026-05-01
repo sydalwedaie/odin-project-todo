@@ -3,12 +3,13 @@ import "./assets/reset.css";
 import "./index.css";
 import "./template.html";
 import sampleData from "./sample_data.js";
-import { isToday, isFuture, format, getTime, startOfToday } from "date-fns";
+import { getTime, startOfToday } from "date-fns";
+import { capitalize } from "./helpers.js";
 import { Collection } from "./model.js";
 import { SidebarView } from "./view_sidebar.js";
 import { ContentView } from "./view_content.js";
 import { TodoView } from "./view_todo.js";
-import { EditProject } from "./aux.js";
+import { EditProject } from "./view_aux.js";
 
 const collection = new Collection();
 collection.init(sampleData);
@@ -23,29 +24,29 @@ const UIstate = {
   currentViewTitle: "Inbox",
 };
 
-function renderSidebarView(projects) {
-  const sidebarView = new SidebarView(sidebarEl, projects);
-  sidebarView.render();
+function renderSidebarView(projects, todayCounter, UIstate) {
+  const view = new SidebarView(sidebarEl, projects, todayCounter);
+  view.render();
 
-  sidebarView.bindHighlightSelectedItem(UIstate.currentViewTitle);
+  view.bindHighlightSelectedItem(UIstate.currentViewTitle);
 
-  sidebarView.bindShowInbox(() => {
+  view.bindShowInbox(() => {
     renderContentView("inbox", "Inbox", collection.getTodosFromInbox());
     UIstate.currentViewType = "inbox";
     UIstate.currentViewTitle = "Inbox";
   });
 
-  sidebarView.bindShowTimeFrame((timeFrame) => {
+  view.bindShowTimeFrame((timeFrame) => {
     renderContentView(
       "timeFrame",
-      timeFrame,
+      capitalize(timeFrame),
       collection.getTodosByTimeFrame(timeFrame)
     );
     UIstate.currentViewType = "timeFrame";
     UIstate.currentViewTitle = timeFrame;
   });
 
-  sidebarView.bindShowProject((projectName) => {
+  view.bindShowProject((projectName) => {
     renderContentView(
       "project",
       projectName,
@@ -57,23 +58,24 @@ function renderSidebarView(projects) {
 }
 
 function renderContentView(type, title, todos) {
-  const contentView = new ContentView(contentEl, type, title, todos);
+  const view = new ContentView(contentEl, type, title, todos);
 
-  contentView.render();
-  contentView.bindToggleTodoStatus((id) => {
+  view.render();
+  view.bindToggleTodoStatus((id) => {
     collection.toggleTodoStatus(id);
+    updateView(collection);
   });
 
-  contentView.bindShowTodoDetails((id) => {
+  view.bindShowTodoDetails((id) => {
     renderTodoView(id, UIstate);
   });
 
-  contentView.bindShowAddnewTodo(() => {
+  view.bindShowAddnewTodo(() => {
     renderTodoView(null, UIstate);
   });
 
   if (type === "project") {
-    contentView.bindShowEditProject((projectName) => {
+    view.bindShowEditProject((projectName) => {
       renderEditProjectView(projectName);
     });
   }
@@ -108,28 +110,31 @@ function renderTodoView(id, UIstate) {
     todoTemplate.project = UIstate.currentViewTitle;
   }
 
-  const todoView = new TodoView(
+  const view = new TodoView(
     dialogEl,
     id ? collection.getTodo(id) : todoTemplate,
     collection.projects
   );
 
   dialogEl.showModal();
-  todoView.render();
-  todoView.bindSaveTodo((details) => {
+  view.render();
+  view.bindSaveTodo((details) => {
     // This setup allows using one button for both events
     if (id) {
       collection.editTodo(id, details);
     } else {
       collection.addTodo(details);
+      // Uncomment to jumpt to newly created project
+      // UIstate.currentViewType = "project";
+      // UIstate.currentViewTitle = details.project;
     }
     dialogEl.close();
     updateView(collection);
   });
 
-  // Attach only if view is opened to add.
+  // Attach only if view is opened to edit
   if (id) {
-    todoView.bindDeleteTodo(() => {
+    view.bindDeleteTodo(() => {
       collection.deleteTodo(id);
       dialogEl.close();
       updateView(collection);
@@ -143,8 +148,8 @@ function renderEditProjectView(projectName) {
   view.render();
   view.bindSaveProject((newName) => {
     collection.editProject(projectName, newName);
-    dialogEl.close();
     UIstate.currentViewTitle = newName;
+    dialogEl.close();
     updateView(collection);
   });
   view.bindDeleteProject(() => {
@@ -157,7 +162,7 @@ function renderEditProjectView(projectName) {
 }
 
 function updateView(collection) {
-  renderSidebarView(collection.projects);
+  renderSidebarView(collection.projects, collection.getTodayCount(), UIstate);
   switch (UIstate.currentViewType) {
     case "inbox":
       renderContentView(
@@ -184,5 +189,5 @@ function updateView(collection) {
 }
 
 // Initialize app
-renderSidebarView(collection.projects);
+renderSidebarView(collection.projects, collection.getTodayCount(), UIstate);
 renderContentView("inbox", "Inbox", collection.getTodosByProject("Inbox"));

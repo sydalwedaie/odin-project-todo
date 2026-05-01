@@ -1,9 +1,10 @@
 import { html } from "./helpers.js";
 
 export class SidebarView {
-  constructor(root, projects) {
+  constructor(root, projects, todayCounter) {
     this.root = root;
     this.projects = projects;
+    this.todayCounter = todayCounter;
   }
 
   render() {
@@ -15,7 +16,9 @@ export class SidebarView {
       </section>
 
       <section class="time-frames">
-        <button data-view-title="today" data-time-frame="today">Today</button>
+        <button data-view-title="today" data-time-frame="today">
+          Today <span class="today-counter">${this.todayCounter}</span>
+        </button>
         <button data-view-title="upcomming" data-time-frame="upcomming">
           Upcomming
         </button>
@@ -44,14 +47,12 @@ export class SidebarView {
     const update = () => {
       const buttons = this.root.querySelectorAll("button");
       for (const btn of buttons) {
-        console.log(btn.dataset.viewTitle, currentSelectedItem.length);
         if (btn.dataset.viewTitle === currentSelectedItem) {
           btn.classList.add("selected");
         } else {
           btn.classList.remove("selected");
         }
       }
-      console.log("----------");
     };
 
     update();
@@ -72,18 +73,18 @@ export class SidebarView {
     });
   }
 
-  bindShowProject(handleClick) {
-    this.root.addEventListener("click", (e) => {
-      if (e.target.dataset.projectName) {
-        handleClick(e.target.dataset.projectName);
-      }
-    });
-  }
-
   bindShowTimeFrame(handleClick) {
     this.root.addEventListener("click", (e) => {
       if (e.target.dataset.timeFrame) {
         handleClick(e.target.dataset.timeFrame);
+      }
+    });
+  }
+
+  bindShowProject(handleClick) {
+    this.root.addEventListener("click", (e) => {
+      if (e.target.dataset.projectName) {
+        handleClick(e.target.dataset.projectName);
       }
     });
   }

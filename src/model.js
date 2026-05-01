@@ -87,7 +87,14 @@ class Collection {
         break;
     }
 
-    return this.todos.filter((todo) => predicate(todo.dueDate));
+    return this.todos
+      .filter((todo) => predicate(todo.dueDate))
+      .sort((a, b) => a.dueDate - b.dueDate);
+  }
+
+  getTodayCount() {
+    return this.getTodosByTimeFrame("today").filter((todo) => !todo.isDone)
+      .length;
   }
 
   // Getters

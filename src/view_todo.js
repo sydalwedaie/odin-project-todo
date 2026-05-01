@@ -127,7 +127,7 @@ ${this.todo.notes}</textarea
           notes: $("#todo-notes").value,
           dueDate: $("#todo-due-date").valueAsNumber || null,
           priority: Number($('input[name="priority"]:checked').value),
-          project: $("#todo-project").value,
+          project: $("#todo-project").value || "Inbox",
           isDone: $("#todo-status").checked,
         };
         handleClick(details);
