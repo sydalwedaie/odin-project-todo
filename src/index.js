@@ -136,6 +136,14 @@ function renderTodoView(id, UIstate) {
   if (id) {
     view.bindDeleteTodo(() => {
       collection.deleteTodo(id);
+      // When last todo is deleted, remove the project view
+      if (
+        UIstate.currentViewType === "project" &&
+        collection.getTodosByProject(UIstate.currentViewTitle).length === 0
+      ) {
+        UIstate.currentViewType = "inbox";
+        UIstate.currentViewTitle = "Inbox";
+      }
       dialogEl.close();
       updateView(collection);
     });
@@ -147,15 +155,15 @@ function renderEditProjectView(projectName) {
   dialogEl.showModal();
   view.render();
   view.bindSaveProject((newName) => {
-    collection.editProject(projectName, newName);
     UIstate.currentViewTitle = newName;
+    collection.editProject(projectName, newName);
     dialogEl.close();
     updateView(collection);
   });
   view.bindDeleteProject(() => {
-    collection.deleteProject(projectName);
     UIstate.currentViewType = "inbox";
     UIstate.currentViewTitle = "Inbox";
+    collection.deleteProject(projectName);
     dialogEl.close();
     updateView(collection);
   });
@@ -174,7 +182,7 @@ function updateView(collection) {
     case "timeFrame":
       renderContentView(
         "timeFrame",
-        UIstate.currentViewTitle,
+        capitalize(UIstate.currentViewTitle),
         collection.getTodosByTimeFrame(UIstate.currentViewTitle)
       );
       break;

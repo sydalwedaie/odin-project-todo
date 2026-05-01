@@ -87,9 +87,7 @@ class Collection {
         break;
     }
 
-    return this.todos
-      .filter((todo) => predicate(todo.dueDate))
-      .sort((a, b) => a.dueDate - b.dueDate);
+    return this.todos.filter((todo) => predicate(todo.dueDate));
   }
 
   getTodayCount() {
@@ -99,7 +97,7 @@ class Collection {
 
   // Getters
   get todos() {
-    return this.#todos;
+    return this.#todos.sort((a, b) => a.dueDate - b.dueDate);
   }
 
   get projects() {
