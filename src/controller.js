@@ -37,10 +37,7 @@ export class Controller {
 
     this.#sidebarControlEl.addEventListener("click", () => {
       this.#mainEl.classList.toggle("sidebar-open");
-    });
-
-    window.addEventListener("resize", (e) => {
-      console.log(e);
+      this.#sidebarEl.classList.toggle("push-main");
     });
   }
 

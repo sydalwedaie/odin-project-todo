@@ -497,6 +497,10 @@ input[type="checkbox"]:checked::before {
   transform: translateX(15rem);
 }
 
+.push-main {
+  z-index: 999 !important;
+}
+
 .sidebar-control {
   cursor: pointer;
   @media (min-width: 50rem) {
