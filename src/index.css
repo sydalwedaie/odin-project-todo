@@ -203,6 +203,7 @@ dialog::backdrop {
 
   @media (min-width: 50rem) {
     position: static;
+    z-index: 999;
   }
 
   section {
