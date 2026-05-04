@@ -10,9 +10,23 @@ export class EditProject {
     console.log("haa");
     this.root.innerHTML = html`
       <div class="edit-project-view">
-        <input type="text" id="project-name" value="${this.projectName}" />
-        <button class="btn-save">Save</button>
-        <button class="btn-delete">Delete</button>
+        <main>
+          <div class="details-wrapper">
+            <label for="project-name">Edit project's name</label>
+            <input
+              type="text"
+              id="project-name"
+              value="${this.projectName}"
+              autofocus
+            />
+          </div>
+        </main>
+        <footer>
+          <div class="controls-wrapper">
+            <button class="btn-save">Save</button>
+            <button class="btn-delete">Delete</button>
+          </div>
+        </footer>
       </div>
     `;
   }

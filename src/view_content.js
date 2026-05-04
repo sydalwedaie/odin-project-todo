@@ -14,13 +14,13 @@ export class ContentView {
   render() {
     this.root.innerHTML = html`
       <div class="content-view">
-        <h1>
-          ${this.title}
+        <header class="content-header">
+          <h1>${this.title}</h1>
           ${this.type === "project"
-            ? "<button class='show-edit-project'>edit</button>"
+            ? "<button class='show-edit-project'><span class='material-icons'>edit</span></button>"
             : ""}
-        </h1>
-        <ul>
+        </header>
+        <ul class="todo-list">
           ${this.todos
             .map(
               (todo) =>
@@ -28,7 +28,12 @@ export class ContentView {
             )
             .join("")}
         </ul>
-        <button class="show-add-new-todo">Add new todo</button>
+        <footer>
+          <button class="show-add-new-todo">
+            <span class="material-icons">add</span>
+            <span>Add new To-Do</span>
+          </button>
+        </footer>
       </div>
     `;
   }
@@ -40,23 +45,32 @@ export class ContentView {
         class="todo-status"
         ${todo.isDone ? "checked" : ""}
       />
-      <div>
-        <span>${todo.title}</span>
-        <span
-          >${todo.dueDate === null
-            ? ""
-            : format(todo.dueDate, "yyyy-MM-dd")}</span
-        >
-        <span>${todo.priority}</span>
+      <div class="todo-details">
+        <div class="todo-details-primary">
+          <span class="todo-title">${todo.title}</span>
+          ${todo.notes
+            ? '<span class="todo-notes-indicator material-icons-outlined">note</span>'
+            : ""}
+          <span class="todo-due-date"
+            >${todo.dueDate === null ? "" : format(todo.dueDate, "PP")}</span
+          >
+          <span class="${`todo-priority priority-${todo.priority}`}">
+            <span class="material-icons">flag</span>
+          </span>
+        </div>
+        <div class="todo-details-secondary">
+          ${this.type === "timeFrame"
+            ? `<div class="todo-project">${todo.project}</div>`
+            : ""}
+        </div>
       </div>
-      ${this.type === "timeFrame" ? `<div>${todo.project}</div>` : ""}
     `;
   }
 
   bindShowEditProject(handleClick) {
     const el = this.root.querySelector(".content-view");
     el.addEventListener("click", (e) => {
-      if (e.target.classList[0] === "show-edit-project") {
+      if (e.target.closest(".show-edit-project")) {
         // pass project's name
         handleClick(this.title);
       }
@@ -90,7 +104,7 @@ export class ContentView {
   bindShowAddnewTodo(handleClick) {
     const el = this.root.querySelector(".content-view");
     el.addEventListener("click", (e) => {
-      if (e.target.classList[0] === "show-add-new-todo") {
+      if (e.target.closest(".show-add-new-todo")) {
         handleClick();
       }
     });

@@ -9,21 +9,29 @@ export class SidebarView {
 
   render() {
     this.root.innerHTML = html`
-      <section>
+      <section class="inbox">
         <button data-view-title="Inbox" data-inbox="true" class="selected">
-          Inbox
+          <span class="icon material-icons">inbox</span>
+          <span>Inbox</span>
         </button>
       </section>
 
       <section class="time-frames">
         <button data-view-title="today" data-time-frame="today">
-          Today <span class="today-counter">${this.todayCounter}</span>
+          <span class="icon material-icons-round">star</span>
+          <span>Today</span>
+
+          ${this.todayCounter
+            ? `<span class="today-counter">${this.todayCounter}</span>`
+            : ""}
         </button>
         <button data-view-title="upcomming" data-time-frame="upcomming">
-          Upcomming
+          <span class="icon material-icons">calendar_month</span>
+          <span>Upcomming</span>
         </button>
         <button data-view-title="anytime" data-time-frame="anytime">
-          Anytime
+          <span class="icon material-icons">view_timeline</span>
+          <span>Anytime</span>
         </button>
       </section>
 
@@ -37,7 +45,13 @@ export class SidebarView {
     return projects
       .map(
         (project) =>
-          `<button data-view-title="${project}" data-project-name="${project}">${project}</button>`
+          html`<button
+            data-view-title="${project}"
+            data-project-name="${project}"
+          >
+            <span class="icon material-icons-outlined">circle</span>
+            <span>${project}</span>
+          </button>`
       )
       .join("");
   }
@@ -58,8 +72,9 @@ export class SidebarView {
     update();
 
     this.root.addEventListener("click", (e) => {
-      if (e.target.localName === "button") {
-        currentSelectedItem = e.target.dataset.viewTitle;
+      const btn = e.target.closest("button");
+      if (btn) {
+        currentSelectedItem = btn.dataset.viewTitle;
       }
       update();
     });
@@ -67,7 +82,8 @@ export class SidebarView {
 
   bindShowInbox(handleClick) {
     this.root.addEventListener("click", (e) => {
-      if (e.target.dataset.inbox) {
+      const btn = e.target.closest("button");
+      if (btn && btn.dataset.inbox) {
         handleClick();
       }
     });
@@ -75,16 +91,18 @@ export class SidebarView {
 
   bindShowTimeFrame(handleClick) {
     this.root.addEventListener("click", (e) => {
-      if (e.target.dataset.timeFrame) {
-        handleClick(e.target.dataset.timeFrame);
+      const btn = e.target.closest("button");
+      if (btn && btn.dataset.timeFrame) {
+        handleClick(btn.dataset.timeFrame);
       }
     });
   }
 
   bindShowProject(handleClick) {
     this.root.addEventListener("click", (e) => {
-      if (e.target.dataset.projectName) {
-        handleClick(e.target.dataset.projectName);
+      const btn = e.target.closest("button");
+      if (btn && btn.dataset.projectName) {
+        handleClick(btn.dataset.projectName);
       }
     });
   }

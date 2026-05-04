@@ -80,9 +80,9 @@ h6 {
 }
 
 /* Fix VoiceOver issue */
-:where(li)::before {
-  content: "\200B";
-}
+/* :where(li)::before { */
+/*   content: "\200B"; */
+/* } */
 
 /* Fix unstyled elements in Safari */
 :where(button, [type="button" i], [type="reset" i], [type="submit" i]) {

@@ -1,5 +1,5 @@
 import { html } from "./helpers.js";
-import { format } from "date-fns";
+import { format, isPast, isToday, isFuture } from "date-fns";
 
 export class TodoView {
   constructor(root, todo, projects) {
@@ -13,30 +13,38 @@ export class TodoView {
     this.root.innerHTML = html`
       <div class="todo-view">
         <main>
-          <section class="todo-title-wrapper">
+          <section class="status-wrapper">
             <input
               type="checkbox"
               id="todo-status"
               ${this.todo.isDone ? "checked" : ""}
             />
+          </section>
+          <section class="details-wrapper">
             <input
               type="text"
-              placeholder="New To-Do"
+              placeholder="${this.todo.id ? "Rename To-Do" : "New To-Do"}"
               value="${this.todo.title}"
               id="todo-title"
               required
             />
-          </section>
-          <section class="todo-details-wrapper">
             <textarea
+              class="textarea"
               name="todo-notes"
               id="todo-notes"
-              placeholder="Todo notes"
+              placeholder="Notes"
+              rows="3"
             >
-${this.todo.notes}</textarea
+${this.todo.notes || ""}</textarea
             >
             <div class="todo-due-date">
+              <label
+                class="todo-due-date-display due-date-control"
+                for="todo-due-date"
+                >When?</label
+              >
               <input
+                onfocus="this.showPicker()"
                 type="date"
                 id="todo-due-date"
                 value="${this.todo.dueDate === null
@@ -45,42 +53,37 @@ ${this.todo.notes}</textarea
               />
             </div>
             <div class="todo-priority">
-              <div class="radio-item">
-                <input
-                  type="radio"
-                  id="priority-noarmal"
-                  name="priority"
-                  value="0"
-                  ${this.todo.priority === 0 ? "checked" : ""}
-                />
-                <label for="priority-noarmal">Normal</label>
-              </div>
+              <input
+                type="radio"
+                id="priority-noarmal"
+                name="priority"
+                value="0"
+                ${this.todo.priority === 0 ? "checked" : ""}
+              />
+              <label for="priority-noarmal">Normal</label>
 
-              <div class="radio-item">
-                <input
-                  type="radio"
-                  id="priority-important"
-                  name="priority"
-                  value="1"
-                  ${this.todo.priority === 1 ? "checked" : ""}
-                />
-                <label for="priority-important">Important</label>
-              </div>
-              <div class="radio-item">
-                <input
-                  type="radio"
-                  id="priority-urgent"
-                  name="priority"
-                  value="2"
-                  ${this.todo.priority === 2 ? "checked" : ""}
-                />
-                <label for="priority-urgent">Urgent</label>
-              </div>
+              <input
+                type="radio"
+                id="priority-important"
+                name="priority"
+                value="1"
+                ${this.todo.priority === 1 ? "checked" : ""}
+              />
+              <label for="priority-important">Important</label>
+
+              <input
+                type="radio"
+                id="priority-urgent"
+                name="priority"
+                value="2"
+                ${this.todo.priority === 2 ? "checked" : ""}
+              />
+              <label for="priority-urgent">Urgent</label>
             </div>
           </section>
         </main>
         <footer>
-          <section class="todo-project-wrapper">
+          <section class="project-wrapper">
             <input
               type="text"
               placeholder="Project"
@@ -96,16 +99,41 @@ ${this.todo.notes}</textarea
               )}
             </datalist>
           </section>
-          <section class="todo-controls-wrapper">
+          <section class="controls-wrapper">
             <button class="btn-cancel">Cancel</button>
             <button class="btn-save">Save</button>
-            <button class="btn-delete">Delete</button>
+            ${this.todo.id ? '<button class="btn-delete">Delete</button>' : ""}
           </section>
         </footer>
       </div>
     `;
 
     this.#handleCloseModal();
+    this.#renderDueDate();
+  }
+
+  #formatDueDate(timeStamp) {
+    let icon = '<span class="icon material-icons">view_timeline</span>';
+    if (isToday(timeStamp)) {
+      icon = '<span class="icon material-icons-round">star</span>';
+    } else if (isFuture(timeStamp)) {
+      icon = '<span class="icon material-icons">calendar_month</span>';
+    } else if (timeStamp && isPast(timeStamp)) {
+      console.log("is past?");
+      icon = '<span class="icon material-icons">circle_notifications</span>';
+    }
+
+    return icon + (timeStamp ? format(timeStamp, "PP") : "Anytime");
+  }
+
+  #renderDueDate() {
+    const displayEl = this.root.querySelector(".todo-due-date-display");
+    displayEl.innerHTML = this.#formatDueDate(this.todo.dueDate);
+    this.root
+      .querySelector("#todo-due-date")
+      .addEventListener("change", (e) => {
+        displayEl.innerHTML = this.#formatDueDate(e.target.valueAsNumber);
+      });
   }
 
   #handleCloseModal() {
