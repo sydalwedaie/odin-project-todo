@@ -38,6 +38,28 @@ export class SidebarView {
       <section class="projects">
         ${this.#getPorjectsListHtml(this.projects)}
       </section>
+      <footer>
+        <div class="attribution">
+          <p>
+            Project by
+            <a
+              href="https://www.theodinproject.com/lessons/node-path-javascript-todo-list"
+              >The Odin Project</a
+            >. Design inspired from
+            <a
+              href="https://www.frontendmentor.io/challenges/dine-restaurant-website-yAt7Vvxt7"
+              >Things</a
+            >
+            app.
+          </p>
+          <p>
+            Coded by
+            <a href="https://github.com/sydalwedaie/odin-project-todo"
+              >Sayed Ali Alwedaie</a
+            >
+          </p>
+        </div>
+      </footer>
     `;
   }
 

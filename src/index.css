@@ -251,6 +251,17 @@ dialog::backdrop {
     &:hover:not(.selected) {
       background-color: var(--surface-hover-dim);
     }
+
+    &:active {
+      background-color: var(--surface-hover-dark);
+    }
+  }
+
+  .inbox,
+  .time-frames {
+    button {
+      font-weight: bold;
+    }
   }
 
   .inbox .icon {
@@ -259,6 +270,10 @@ dialog::backdrop {
 
   .projects .icon {
     color: var(--text-secondary);
+  }
+
+  footer {
+    margin-top: auto;
   }
 }
 
@@ -510,4 +525,11 @@ input[type="checkbox"]:checked::before {
   @media (min-width: 50rem) {
     display: none;
   }
+}
+
+.attribution {
+  opacity: 0.7;
+  padding: 1rem;
+  font-size: 0.8rem;
+  text-align: center;
 }
