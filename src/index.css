@@ -316,6 +316,7 @@ dialog::backdrop {
 
   .todo-details {
     flex-grow: 1;
+    flex-wrap: wrap;
   }
 
   .todo-notes-indicator {
@@ -384,7 +385,7 @@ dialog::backdrop {
   .todo-due-date {
     display: flex;
     input {
-      width: 0;
+      width: 50px;
     }
   }
 
