@@ -400,7 +400,7 @@ dialog::backdrop {
   .todo-due-date {
     display: flex;
     input {
-      width: 50px;
+      width: 0;
     }
   }
 

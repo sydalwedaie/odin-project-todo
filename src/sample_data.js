@@ -4,8 +4,8 @@ const today = startOfToday();
 
 const sampleData = [
   {
-    title: "hello",
-    notes: "there",
+    title: "Get quotation",
+    notes: "Contact dealer by phone",
     dueDate: getTime(today),
     priority: 2,
     project: "Inbox",
