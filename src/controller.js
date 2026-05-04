@@ -8,6 +8,8 @@ import { TodoView } from "./view_todo.js";
 import { EditProject } from "./view_aux.js";
 
 export class Controller {
+  #sidebarControlEl = document.querySelector(".sidebar-control");
+  #mainEl = document.querySelector(".main");
   #sidebarEl = document.querySelector("#sidebar");
   #contentEl = document.querySelector("#content");
   #dialogEl = document.querySelector("dialog");
@@ -32,6 +34,14 @@ export class Controller {
       "Inbox",
       this.#collection.getTodosByProject("Inbox")
     );
+
+    this.#sidebarControlEl.addEventListener("click", () => {
+      this.#mainEl.classList.toggle("sidebar-open");
+    });
+
+    window.addEventListener("resize", (e) => {
+      console.log(e);
+    });
   }
 
   renderSidebarView(root, projects, todayCounter) {
