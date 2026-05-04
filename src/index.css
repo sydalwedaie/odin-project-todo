@@ -55,6 +55,22 @@ button {
   font-size: 1.25rem !important;
 }
 
+.icon-today {
+  color: var(--status-warning);
+}
+
+.icon-upcomming {
+  color: var(--status-danger);
+}
+
+.icon-anytime {
+  color: var(--status-success);
+}
+
+.icon-overdue {
+  color: red;
+}
+
 dialog {
   background-color: var(--app-bg);
   width: 100%;
@@ -73,6 +89,7 @@ dialog {
     padding: 0.5rem 1rem;
     background-color: var(--surface-bg);
     width: fit-content;
+    border-radius: 0.5rem;
   }
 
   main {
@@ -177,6 +194,12 @@ dialog::backdrop {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  font-size: 0.95rem;
+  width: 15rem;
+
+  section {
+    padding: 0 0.5rem;
+  }
 
   .selected {
     background-color: var(--surface-hover-dark);
@@ -206,6 +229,12 @@ dialog::backdrop {
     width: 100%;
     text-align: left;
     border-radius: 0.3rem;
+    white-space: nowrap;
+
+    span:nth-child(2) {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     &:hover:not(.selected) {
       background-color: var(--surface-hover-dim);
@@ -216,18 +245,6 @@ dialog::backdrop {
     color: var(--icon-blue);
   }
 
-  [data-time-frame="today"] .icon {
-    color: var(--status-warning);
-  }
-
-  [data-time-frame="upcomming"] .icon {
-    color: var(--status-danger);
-  }
-
-  [data-time-frame="anytime"] .icon {
-    color: var(--status-success);
-  }
-
   .projects .icon {
     color: var(--text-secondary);
   }
@@ -235,8 +252,17 @@ dialog::backdrop {
 
 .main {
   height: 100vh;
-  padding: 2rem 10% 0;
+  padding: 2rem 1rem;
   flex-grow: 1;
+  overflow-y: scroll;
+  container-type: inline-size;
+  container-name: main;
+}
+
+#content {
+  @container main (width > 33rem) {
+    padding: 3rem 10% 1rem;
+  }
 }
 
 /* Content */

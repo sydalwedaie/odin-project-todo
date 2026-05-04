@@ -38,11 +38,6 @@ export class TodoView {
 ${this.todo.notes || ""}</textarea
             >
             <div class="todo-due-date">
-              <label
-                class="todo-due-date-display due-date-control"
-                for="todo-due-date"
-                >When?</label
-              >
               <input
                 onfocus="this.showPicker()"
                 type="date"
@@ -51,6 +46,11 @@ ${this.todo.notes || ""}</textarea
                   ? ""
                   : format(this.todo.dueDate, "yyyy-MM-dd")}"
               />
+              <label
+                class="todo-due-date-display due-date-control"
+                for="todo-due-date"
+                >When?</label
+              >
             </div>
             <div class="todo-priority">
               <input
@@ -113,14 +113,16 @@ ${this.todo.notes || ""}</textarea
   }
 
   #formatDueDate(timeStamp) {
-    let icon = '<span class="icon material-icons">view_timeline</span>';
+    let icon =
+      '<span class="icon icon-anytime material-icons">view_timeline</span>';
     if (isToday(timeStamp)) {
-      icon = '<span class="icon material-icons-round">star</span>';
+      icon = '<span class="icon icon-today material-icons-round">star</span>';
     } else if (isFuture(timeStamp)) {
-      icon = '<span class="icon material-icons">calendar_month</span>';
+      icon =
+        '<span class="icon icon-upcomming material-icons">calendar_month</span>';
     } else if (timeStamp && isPast(timeStamp)) {
-      console.log("is past?");
-      icon = '<span class="icon material-icons">circle_notifications</span>';
+      icon =
+        '<span class="icon icon-overdue material-icons">circle_notifications</span>';
     }
 
     return icon + (timeStamp ? format(timeStamp, "PP") : "Anytime");

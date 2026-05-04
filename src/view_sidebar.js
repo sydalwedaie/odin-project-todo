@@ -18,7 +18,7 @@ export class SidebarView {
 
       <section class="time-frames">
         <button data-view-title="today" data-time-frame="today">
-          <span class="icon material-icons-round">star</span>
+          <span class="icon icon-today material-icons-round">star</span>
           <span>Today</span>
 
           ${this.todayCounter
@@ -26,11 +26,11 @@ export class SidebarView {
             : ""}
         </button>
         <button data-view-title="upcomming" data-time-frame="upcomming">
-          <span class="icon material-icons">calendar_month</span>
+          <span class="icon icon-upcomming material-icons">calendar_month</span>
           <span>Upcomming</span>
         </button>
         <button data-view-title="anytime" data-time-frame="anytime">
-          <span class="icon material-icons">view_timeline</span>
+          <span class="icon icon-anytime material-icons">view_timeline</span>
           <span>Anytime</span>
         </button>
       </section>
