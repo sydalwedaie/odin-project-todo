@@ -196,6 +196,7 @@ dialog::backdrop {
   gap: 1rem;
   font-size: 0.95rem;
   width: 15rem;
+  overflow-y: scroll;
 
   section {
     padding: 0 0.5rem;
@@ -219,6 +220,7 @@ dialog::backdrop {
   }
 
   button {
+    color: var(--text-primary);
     background-color: transparent;
     border: none;
     cursor: pointer;
