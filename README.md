@@ -13,7 +13,7 @@ This is a solution to the [Todo challenge from the Odin Project](https://www.the
 
 I wanted to take this as an opportunity to hone my architectural decision-making skills using vanilla JS, before moving on to libraries and frameworks that would abstract away a lot of these concepts.
 
-## What I learned
+## Code Organization
 
 This is my second attempt at building using the MVC architecture.
 
