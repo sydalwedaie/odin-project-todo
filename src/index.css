@@ -72,8 +72,7 @@ button {
 
 dialog {
   background-color: var(--app-bg);
-  width: 100%;
-  max-width: 37rem;
+  width: min(100%, 37rem);
   border: 1px solid var(--border-subtle);
   border-radius: 0.5rem;
   padding: 0;
@@ -105,8 +104,9 @@ dialog {
     justify-content: space-between;
     align-items: center;
 
-    .controls-wrapper {
-      margin-left: auto;
+    @container main (width < 33rem) {
+      flex-direction: column;
+      gap: 0.5rem;
     }
   }
 
@@ -433,6 +433,12 @@ dialog::backdrop {
       &:hover,
       &:focus {
         border: 1px solid var(--border-subtle);
+      }
+    }
+    @container main (width < 33rem) {
+      padding-left: 0;
+      input {
+        text-align: center;
       }
     }
   }
