@@ -7,30 +7,19 @@
   /* --- Typography --- */
   --text-primary: #3e3127;
   --text-secondary: #7a6f66;
+  --text-inverted: white;
 
   /* --- Borders & Dividers --- */
   --border-subtle: #d4cabc;
 
   /* --- Accents & Status (Crucial for Todo Apps) --- */
-  --accent-brand: #c65345;
+  --status-info: #4a83c4;
   --status-success: #3b8e63;
   --status-warning: #d4a352;
   --status-danger: #d9534f;
   --status-neutral: #aaa69b;
-
-  /* --- Tags & Pills --- */
-  --tag-bg: #e0d6c8;
-  --tag-text: #52443a;
-
-  --icon-blue: #4a83c4;
-  --accent-blue: #2a7994;
-  --tag-blue-bg: #eaf2f5;
-  --tag-blue-border: #9dc0ce;
-
-  /* --- Teals & Mints --- */
-  --callout-teal-bg: #d4ebe2;
-  --callout-teal-text: #2b695e;
 }
+
 .drop-shadow {
   box-shadow: 0px 75px 100px -50px rgb(56 66 85 / 50%);
 }
@@ -113,7 +102,7 @@ dialog {
   button {
     border-radius: 0.2rem;
     padding: 0.3rem 0.5rem;
-    color: white;
+    color: var(--text-inverted);
     font-weight: bold;
     min-width: 5rem;
     transition: all 0.1s ease;
@@ -128,7 +117,7 @@ dialog {
   }
 
   .btn-save {
-    background-color: var(--icon-blue);
+    background-color: var(--status-info);
   }
 
   .btn-delete {
@@ -219,7 +208,7 @@ dialog::backdrop {
   .today-counter {
     margin-left: auto;
     background-color: var(--status-danger);
-    color: white;
+    color: var(--text-inverted);
     font-weight: bold;
     padding: 0 0.4rem;
     border-radius: 0.2rem;
@@ -265,7 +254,7 @@ dialog::backdrop {
   }
 
   .inbox .icon {
-    color: var(--icon-blue);
+    color: var(--status-info);
   }
 
   .projects .icon {
@@ -401,6 +390,9 @@ dialog::backdrop {
     display: flex;
     input {
       width: 0;
+      pointer-events: none;
+      position: absolute;
+      opacity: 0;
     }
   }
 
@@ -464,11 +456,11 @@ dialog::backdrop {
   }
 
   input:checked + label {
-    color: white;
+    color: var(--text-inverted);
   }
 
   input[value="0"]:checked + label {
-    background-color: var(--icon-blue);
+    background-color: var(--status-info);
   }
   input[value="1"]:checked + label {
     background-color: var(--status-warning);
@@ -506,7 +498,7 @@ input[type="checkbox"]::before {
   height: 0.75em;
   transform: scale(0);
   transition: 120ms transform ease-in-out;
-  box-shadow: inset 1em 1em var(--icon-blue);
+  box-shadow: inset 1em 1em var(--status-info);
   border-radius: 0.2rem;
   @supports (corner-shape: squircle) {
     border-radius: 50%;
